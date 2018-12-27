@@ -66,7 +66,7 @@
   </target>
 
   <target name="parser" depends="scanner">
-    <!-- set trace="yes" if you want to trace the praser actions -->
+    <!-- set trace="yes" if you want to trace the parser actions -->
     <antlr
       target="${src}/decaf/Parser.g"
       outputdirectory="${java}/decaf">
@@ -77,7 +77,7 @@
   </target>
 
   <target name="compile" depends="parser">
-    <javac srcdir="${java}:${src}" destdir="${classes}" debug="on">
+    <javac srcdir="${java}:${src}" destdir="${classes}" includeantruntime="true" debug="on">
       <classpath refid="libraries"/>
     </javac>
   </target>

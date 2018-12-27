@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="classes" path="java"/>
+	<classpathentry kind="src" output="classes" path="src"/>
+	<classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+	<classpathentry kind="con" path="/Users/aschamp/projects/compiler/skeleton/lib"/>
+	<classpathentry kind="lib" path="/Users/aschamp/projects/compiler/skeleton/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="/Applications/Eclipse Java.app/Contents/Eclipse/plugins/org.eclipse.equinox.launcher_1.5.200.v20180922-1751.jar"/>
+	<classpathentry kind="var" path="ANTLR_HOME/antlr.jar" sourcepath="ANTLR_HOME/antlrsrc.zip"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
