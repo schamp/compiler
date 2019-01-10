@@ -10,25 +10,86 @@ class DecafScanner extends Lexer;
 options 
 {
   k=2;
+  testLiterals=false;
 }
 
 tokens 
 {
+  "boolean";
+  "break";
+  "callout";
   "class";
+  "continue";
+  "else";
+  "for";
+  "if";
+  "int";
+  "return";
+  "void";
+  TRUE="true";
+  FALSE="false";
 }
 
-LCURLY options { paraphrase = "{"; } : "{";
-RCURLY options { paraphrase = "}"; } : "}";
+LCURLY options { paraphrase = "{"; testLiterals=true; } : "{";
+RCURLY options { paraphrase = "}"; testLiterals=true; } : "}";
 
-ID options { paraphrase = "an identifier"; } : 
-  ('a'..'z' | 'A'..'Z')+;
+COMMA options { paraphrase = ","; testLiterals=true; } : ',' ;
+SEMICOLON options { paraphrase = ";"; testLiterals=true; } : ';' ;
 
-WS_ : (' ' | '\n' {newline();}) {_ttype = Token.SKIP; };
+LBRACKET options { paraphrase = "["; testLiterals=true; } : '[' ;
+RBRACKET options { paraphrase = "]"; testLiterals=true; } : ']' ;
+
+LPAREN options { paraphrase = "("; testLiterals=true; } : '(' ;
+RPAREN options { paraphrase = ")"; testLiterals=true; } : ')' ;
+
+ID options { paraphrase = "an identifier"; testLiterals=true; } :
+    ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
+
+WS_ : (' ' | '\t' | '\n' {newline();}) {_ttype = Token.SKIP; };
 
 SL_COMMENT : "//" (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
 
-CHAR : '\'' (ESC|~'\'') '\'';
-STRING : '"' (ESC|~'"')* '"';
+INT_LITERAL options {testLiterals=true; }: ( DECIMAL_LITERAL | HEX_LITERAL ) ;
+CHAR_LITERAL : '\'' (CHAR) '\'';
+STRING_LITERAL : '"' (CHAR)* '"';
+
+ARITH_OP : '+' | '-' | '*' | '/' | '%' ;
+REL_OP : '<' | '>' | "<=" | ">=" ;
+EQ_OP : "==" | "!=" ;
+COND_OP : "&&" | "||" ;
+ASSIGN_OP : "=" | "+=" | "-=" ;
 
 protected
-ESC :  '\\' ('n'|'"');
+ESC :  '\\' ('n'|'t'|'\\'|'\"'|'\'') ;
+
+protected
+ALPHA : 'a'..'z' | 'A'..'Z' ;
+
+protected
+ALPHA_NUM : ALPHA | DIGIT ;
+
+protected
+TRUE : "true" ;
+
+protected
+FALSE : "false" ;
+
+protected
+CHAR : '\40'..'\41'
+     | '\43'..'\46'
+     | '\50'..'\133'
+     | '\135'..'\176'
+     | ESC
+     ;
+
+protected
+DECIMAL_LITERAL : (DIGIT) (DIGIT)* ;
+
+protected
+HEX_LITERAL : '0' 'x' (HEX_DIGIT) (HEX_DIGIT)* ;
+
+protected
+DIGIT : '0'..'9' ;
+
+protected
+HEX_DIGIT : DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;

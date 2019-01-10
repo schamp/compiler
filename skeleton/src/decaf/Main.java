@@ -25,12 +25,28 @@ class Main {
 		        		{
 		        			String type = "";
 		        			String text = token.getText();
-		
+
 		        			switch (token.getType())
 		        			{
 		        			case DecafScannerTokenTypes.ID:
 		        				type = " IDENTIFIER";
 		        				break;
+							case DecafScannerTokenTypes.STRING_LITERAL:
+								type = " STRINGLITERAL";
+								break;
+							case DecafScannerTokenTypes.CHAR_LITERAL:
+								type = " CHARLITERAL";
+								break;
+							case DecafScannerTokenTypes.INT_LITERAL:
+								type = " INTLITERAL";
+								break;
+							case DecafScannerTokenTypes.TRUE:
+							case DecafScannerTokenTypes.FALSE:
+								type = " BOOLEANLITERAL" ;
+								break;
+//							default:
+//								type = " "+Integer.toString(token.getType());
+//								break;
 		        			}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}
