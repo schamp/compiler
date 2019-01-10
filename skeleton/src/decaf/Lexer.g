@@ -26,8 +26,8 @@ tokens
   "int";
   "return";
   "void";
-  TRUE="true";
-  FALSE="false";
+  TRUE_LITERAL="true";
+  FALSE_LITERAL="false";
 }
 
 LCURLY options { paraphrase = "{"; testLiterals=true; } : "{";
@@ -53,10 +53,25 @@ INT_LITERAL options {testLiterals=true; }: ( DECIMAL_LITERAL | HEX_LITERAL ) ;
 CHAR_LITERAL : '\'' (CHAR) '\'';
 STRING_LITERAL : '"' (CHAR)* '"';
 
+OPERATOR : ARITH_OP
+         | REL_OP
+         | EQ_OP
+         | COND_OP
+         | ASSIGN_OP ;
+
+protected
 ARITH_OP : '+' | '-' | '*' | '/' | '%' ;
+
+protected
 REL_OP : '<' | '>' | "<=" | ">=" ;
+
+protected
 EQ_OP : "==" | "!=" ;
+
+protected
 COND_OP : "&&" | "||" ;
+
+protected
 ASSIGN_OP : "=" | "+=" | "-=" ;
 
 protected
