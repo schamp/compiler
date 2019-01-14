@@ -42,6 +42,10 @@ RBRACKET options { paraphrase = "]"; testLiterals=true; } : ']' ;
 LPAREN options { paraphrase = "("; testLiterals=true; } : '(' ;
 RPAREN options { paraphrase = ")"; testLiterals=true; } : ')' ;
 
+HYPHEN : '-' ;
+BANG : '!' ;
+EQ: '=';
+
 ID options { paraphrase = "an identifier"; testLiterals=true; } :
     ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
 
@@ -107,4 +111,4 @@ protected
 DIGIT : '0'..'9' ;
 
 protected
-HEX_DIGIT : DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+HEX_DIGIT: DIGIT | 'a'..'f' | 'A'..'F' ;
