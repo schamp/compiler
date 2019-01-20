@@ -68,6 +68,7 @@ class Main {
         } catch(Exception e) {
         	// print the error:
             System.out.println(CLI.infile+" "+e);
+            System.exit(1);
         }
     }
 }
