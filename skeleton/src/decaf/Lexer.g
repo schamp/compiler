@@ -9,7 +9,7 @@ options
 class DecafScanner extends Lexer;
 options 
 {
-  k=2;
+  k=3;
   testLiterals=false;
 }
 
@@ -42,10 +42,6 @@ RBRACKET options { paraphrase = "]"; testLiterals=true; } : ']' ;
 LPAREN options { paraphrase = "("; testLiterals=true; } : '(' ;
 RPAREN options { paraphrase = ")"; testLiterals=true; } : ')' ;
 
-HYPHEN : '-' ;
-BANG : '!' ;
-EQ: '=';
-
 ID options { paraphrase = "an identifier"; testLiterals=true; } :
     ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
 
@@ -57,26 +53,27 @@ INT_LITERAL options {testLiterals=true; }: ( DECIMAL_LITERAL | HEX_LITERAL ) ;
 CHAR_LITERAL : '\'' (CHAR) '\'';
 STRING_LITERAL : '"' (CHAR)* '"';
 
-OPERATOR : ARITH_OP
+OPERATOR : '+' | '-' | '*' | '%' | '/'
          | REL_OP
-         | EQ_OP
+         | "==" | "!="
          | COND_OP
-         | ASSIGN_OP ;
+         | "=" | "+=" | "-=" ;
 
-protected
-ARITH_OP : '+' | '-' | '*' | '/' | '%' ;
 
 protected
 REL_OP : '<' | '>' | "<=" | ">=" ;
 
 protected
-EQ_OP : "==" | "!=" ;
-
-protected
 COND_OP : "&&" | "||" ;
 
 protected
-ASSIGN_OP : "=" | "+=" | "-=" ;
+HYPHEN : "-" ;
+
+protected
+BANG : "!" ;
+
+protected
+EQ: '=';
 
 protected
 ESC :  '\\' ('n'|'t'|'\\'|'\"'|'\'') ;
