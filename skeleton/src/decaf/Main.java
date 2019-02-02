@@ -2,8 +2,8 @@ package decaf;
 
 import decaf.generated.*;
 import java.io.*;
-import antlr.Token;
 import java6035.tools.CLI.*;
+import org.antlr.v4.runtime.*;
 
 class Main {
     public static void main(String[] args) {
@@ -15,21 +15,21 @@ class Main {
 
         	if (CLI.target == CLI.SCAN)
         	{
-        		DecafLexer lexer = new DecafLexer(new CharStream(inputStream));
+        		DecafLexer lexer = new DecafLexer(CharStreams.fromStream(inputStream));
         		Token token;
         		boolean done = false;
         		while (!done)
         		{
         			try
         			{
-		        		for (token=lexer.nextToken(); token.getType()!=DecafParserTokenTypes.EOF; token=lexer.nextToken())
+		        		for (token=lexer.nextToken(); token.getType()!=DecafParser.EOF; token=lexer.nextToken())
 		        		{
 		        			String type = "";
 		        			String text = token.getText();
 
 		        			switch (token.getType())
 		        			{
-		        			case DecafLexer.ID:
+		        			case DecafLexer.ADD_OP:
 		        				type = " IDENTIFIER";
 		        				break;/*
 							case DecafScannerTokenTypes.STRING_LITERAL:
@@ -55,15 +55,16 @@ class Main {
         			} catch(Exception e) {
         	        	// print the error:
         	            System.out.println(CLI.infile+" "+e);
-        	            lexer.consume ();
+        	            //lexer.consume ();
         	        }
         		}
         	}
         	else if (CLI.target == CLI.PARSE || CLI.target == CLI.DEFAULT)
         	{
-        		DecafScanner lexer = new DecafScanner(new DataInputStream(inputStream));
+        	/*	DecafLexer lexer = new DecafLexer(new ANTLRInputStream(inputStream));
         		DecafParser parser = new DecafParser (lexer);
                 parser.program();
+                */
         	}
         	
         } catch(Exception e) {
