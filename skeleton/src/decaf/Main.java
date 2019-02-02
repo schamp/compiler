@@ -1,5 +1,6 @@
 package decaf;
 
+import decaf.generated.*;
 import java.io.*;
 import antlr.Token;
 import java6035.tools.CLI.*;
@@ -14,7 +15,7 @@ class Main {
 
         	if (CLI.target == CLI.SCAN)
         	{
-        		DecafScanner lexer = new DecafScanner(new DataInputStream(inputStream));
+        		DecafLexer lexer = new DecafLexer(new CharStream(inputStream));
         		Token token;
         		boolean done = false;
         		while (!done)
@@ -28,9 +29,9 @@ class Main {
 
 		        			switch (token.getType())
 		        			{
-		        			case DecafScannerTokenTypes.ID:
+		        			case DecafLexer.ID:
 		        				type = " IDENTIFIER";
-		        				break;
+		        				break;/*
 							case DecafScannerTokenTypes.STRING_LITERAL:
 								type = " STRINGLITERAL";
 								break;
@@ -43,7 +44,7 @@ class Main {
 							case DecafScannerTokenTypes.TRUE_LITERAL:
 							case DecafScannerTokenTypes.FALSE_LITERAL:
 								type = " BOOLEANLITERAL" ;
-								break;
+								break;*/
 //							default:
 //								type = " "+Integer.toString(token.getType());
 //								break;

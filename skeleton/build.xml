@@ -89,15 +89,20 @@
         <propertyreset name="${is.jar.uptodate}" value="${is.all.uptodate}" />
     </target>
 
-    <target name="compile" depends="init,up-to-date,antlr4" unless="is.jar.uptodate" />
+    <target name="compile" depends="init,up-to-date,antlr4">
+	    <javac destdir="${classes}" includeantruntime="true" debug="on">
+		    <src path="${java}" />
+		    <src path="${src}" />
+
+      <classpath refid="libraries"/>
+    </javac>
+  </target>
 
     <property name="antlr4.jar" value="antlr-4.7.2-complete.jar" />
     <path id="cp.antlr4">
 	    <pathelement location="${lib}/${antlr4.jar}"/>
-            <pathelement location="${antlr4_runtime.jar}"/>
-            <pathelement location="${st4.jar}"/>
-            <pathelement location="${antlr3_runtime.jar}"/>
     </path>
+    <property name="antlr4.touch" value="${java}/antlr4.touch" />
 
     <macrodef name="antlr4">
         <attribute name="srcpath"/>
@@ -140,7 +145,7 @@
         <echo message="Generating ANTLR 4 grammars:${line.separator}  ${echo.sources.antlr4}"/>
 
         <parallel threadsperprocessor="1" failonany="true">
-		<antlr4 srcpath="decaf/scanner">
+		<antlr4 srcpath="decaf">
                 <args>
                     <arg value="-visitor"/>
                     <arg value="-Xforce-atn"/>
@@ -167,11 +172,6 @@
   </target>
 
   <!--
-  <target name="compile" depends="parser">
-    <javac srcdir="${java}:${src}" destdir="${classes}" includeantruntime="true" debug="on">
-      <classpath refid="libraries"/>
-    </javac>
-  </target>
   -->
   <target name="jar" depends="compile">
     <jar jarfile="${dist}/Compiler.jar" basedir="${classes}">
