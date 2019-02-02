@@ -34,7 +34,11 @@ RBRACKET : ']' ;
 LPAREN : '(' ;
 RPAREN : ')' ;
 
-WS_ : (' ' | '\t' | '\n' ) { skip(); };
+// strictly speaking form feed \f (0xC) is not in the Decaf grammar
+// but the errors it was producing were hard to handle with our tests
+// since we're not likely to use or encounter it in the real world,
+// let's make life easy by just considering it whitespace.
+WS_ : (' ' | '\t' | '\n' | '\f' ) { skip(); };
 
 SL_COMMENT : '//' ( ~'\n' )* '\n' { skip(); };
 
