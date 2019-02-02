@@ -5,6 +5,7 @@ pushd scanner > /dev/null;
   for x in *; do
     if [[ "${x}" != "output" ]]; then
       echo "Running test on ${x}..."
+      cat ${x}
       CMD="java -jar ../dist/Compiler.jar -target scan ${x}"
       echo $CMD;
       $CMD | tee /tmp/${x}.out;

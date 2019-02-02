@@ -1,96 +1,52 @@
 grammar Decaf;
 
-//@header {package decaf;}
-
-options 
+options
 {
   //mangleLiteralPrefix = 'TK_';
   language='Java';
   //k=3;
   //testLiterals=false;
 }
-/*
-tokens 
-{
-  'boolean';
-  'break';
-  'callout';
-  'class';
-  'continue';
-  'else';
-  'for';
-  'if';
-  'int';
-  'return';
-  'void';
-  TRUE_LITERAL='true';
-  FALSE_LITERAL='false';
-}
 
+BOOLEAN : 'boolean' ;
+BREAK : 'break' ;
+CALLOUT : 'callout' ;
+CLASS : 'class' ;
+CONTINUE : 'continue' ;
+ELSE : 'else' ;
+FALSE : 'false' ;
+FOR : 'for' ;
+IF : 'if' ;
+INT : 'int' ;
+RETURN : 'return' ;
+TRUE : 'true' ;
+VOID : 'void' ;
 
-LCURLY options { paraphrase = "{"; testLiterals=true; } : "{";
-RCURLY options { paraphrase = "}"; testLiterals=true; } : "}";
+LCURLY : '{';
+RCURLY : '}';
 
-COMMA options { paraphrase = ","; testLiterals=true; } : ',' ;
-SEMICOLON options { paraphrase = ";"; testLiterals=true; } : ';' ;
+COMMA : ',' ;
+SEMICOLON : ';' ;
 
-LBRACKET options { paraphrase = "["; testLiterals=true; } : '[' ;
-RBRACKET options { paraphrase = "]"; testLiterals=true; } : ']' ;
+LBRACKET : '[' ;
+RBRACKET : ']' ;
 
-LPAREN options { paraphrase = "("; testLiterals=true; } : '(' ;
-RPAREN options { paraphrase = ")"; testLiterals=true; } : ')' ;
+LPAREN : '(' ;
+RPAREN : ')' ;
 
-ID options { paraphrase = "an identifier"; testLiterals=true; } :
-    ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
+WS_ : (' ' | '\t' | '\n' ) { skip(); };
 
-WS_ : (' ' | '\t' | '\n' {newline();}) {_ttype = Token.SKIP; };
-
-SL_COMMENT : "//" (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
-
-INT_LITERAL options {testLiterals=true; }: ( DECIMAL_LITERAL | HEX_LITERAL ) ;
-CHAR_LITERAL : '\'' (CHAR) '\'';
-STRING_LITERAL : '"' (CHAR)* '"';
-*/
-expr : ADD_OP ;
-
-ADD_OP : '+' | '-' ;
-/*
-MULT_OP: '*' | '/' | '%' ;
-
-REL_OP : '<' | '>' | "<=" | ">=" ;
-
-EQ_OP : "==" | "!=" ;
-
-AND_OP : "&&" ;
-
-OR_OP : "||" ;
-
-ASSIGN_OP : EQUALS | "+=" | "-=" ;
-
-EQUALS : '=' ;
-
-MINUS : '-' ;
+SL_COMMENT : '//' ( ~'\n' )* '\n' { skip(); };
 
 fragment
-ESC :  '\\' ('n'|'t'|'\\'|'\"'|'\'') ;
+ESC :  '\\' ('n'|'t'|'\\'|'"'|'\'') ;
 
+// these must be hex, not octal!
 fragment
-ALPHA : 'a'..'z' | 'A'..'Z' ;
-
-fragment
-ALPHA_NUM : ALPHA | DIGIT ;
-
-fragment
-TRUE : "true" ;
-
-fragment
-FALSE : "false" ;
-
-fragment
-CHAR : '\40'..'\41'
-     | '\43'..'\46'
-     | '\50'..'\133'
-     | '\135'..'\176'
+CHAR : '\u0020'..'\u0021'
+     | '\u0023'..'\u0026'
+     | '\u0028'..'\u005B'
+     | '\u005D'..'\u007E'
      | ESC
      ;
 
@@ -106,4 +62,34 @@ DIGIT : '0'..'9' ;
 fragment
 HEX_DIGIT : DIGIT | 'a'..'f' | 'A'..'F' ;
 
-*/
+INT_LITERAL : ( DECIMAL_LITERAL | HEX_LITERAL ) ;
+CHAR_LITERAL : '\'' (CHAR) '\'';
+STRING_LITERAL : '"' (CHAR)* '"';
+
+fragment
+ALPHA : 'a'..'z' | 'A'..'Z' ;
+
+fragment
+ALPHA_NUM : ALPHA | DIGIT ;
+
+IDENTIFIER : ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
+
+ADD_OP : '+' | '-' ;
+
+MULT_OP: '*' | '/' | '%' ;
+
+REL_OP : '<' | '>' | '<=' | '>=' ;
+
+EQ_OP : '==' | '!=' ;
+
+AND_OP : '&&' ;
+
+OR_OP : '||' ;
+
+ASSIGN_OP : EQUALS | '+=' | '-=' ;
+
+EQUALS : '=' ;
+
+MINUS : '-' ;
+
+expr : ADD_OP ;

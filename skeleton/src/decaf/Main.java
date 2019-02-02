@@ -29,22 +29,22 @@ class Main {
 
 		        			switch (token.getType())
 		        			{
-		        			case DecafLexer.ADD_OP:
+		        			case DecafLexer.IDENTIFIER:
 		        				type = " IDENTIFIER";
-		        				break;/*
-							case DecafScannerTokenTypes.STRING_LITERAL:
+		        				break;
+							case DecafLexer.STRING_LITERAL:
 								type = " STRINGLITERAL";
 								break;
-							case DecafScannerTokenTypes.CHAR_LITERAL:
+							case DecafLexer.CHAR_LITERAL:
 								type = " CHARLITERAL";
 								break;
-							case DecafScannerTokenTypes.INT_LITERAL:
+							case DecafLexer.INT_LITERAL:
 								type = " INTLITERAL";
 								break;
-							case DecafScannerTokenTypes.TRUE_LITERAL:
-							case DecafScannerTokenTypes.FALSE_LITERAL:
+							case DecafLexer.TRUE:
+							case DecafLexer.FALSE:
 								type = " BOOLEANLITERAL" ;
-								break;*/
+								break;
 //							default:
 //								type = " "+Integer.toString(token.getType());
 //								break;
