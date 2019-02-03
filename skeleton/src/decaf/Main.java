@@ -2,6 +2,7 @@ package decaf;
 
 import decaf.generated.*;
 import java.io.*;
+import java.util.Map;
 import java6035.tools.CLI.*;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
@@ -19,6 +20,17 @@ class ThrowingErrorListener extends BaseErrorListener {
 }
 
 class Main {
+
+    public static boolean isTraceOn() {
+        Map<String, String> env = System.getenv();
+        String trace = env.get("TRACE");
+        if (trace != null) {
+            System.out.println("TRACE: " + trace);
+            return trace.equals("1");
+        } else {
+            return false;
+        }
+    }
     public static void main(String[] args) {
         try {
         	CLI.parse (args, new String[0]);
@@ -77,7 +89,7 @@ class Main {
         	}
         	else if (CLI.target == CLI.PARSE || CLI.target == CLI.DEFAULT)
         	{
-        		DecafLexer lexer = new DecafLexer(new ANTLRInputStream(inputStream));
+        		DecafLexer lexer = new DecafLexer(CharStreams.fromStream(inputStream));
         		lexer.removeErrorListeners();
         		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 
@@ -86,6 +98,7 @@ class Main {
         		DecafParser parser = new DecafParser (tokens);
         		parser.removeErrorListeners();
         		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+        		parser.setTrace(isTraceOn());
 
                 parser.program();
 

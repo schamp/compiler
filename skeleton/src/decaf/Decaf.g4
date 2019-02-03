@@ -155,18 +155,18 @@ literal : INT_LITERAL
         | STRING_LITERAL
         ;
 
-rvalue : location
+rvalue : method_call
+       | location
        | literal
-       | method_call
        | RPAREN expr LPAREN
        ;
 
 
-location : IDENTIFIER
-         | IDENTIFIER LBRACKET expr RBRACKET
+location : IDENTIFIER LBRACKET expr RBRACKET
+         | IDENTIFIER
          ;
 
-method_call : IDENTIFIER LPAREN expr_list RPAREN
+method_call : IDENTIFIER LPAREN ( expr_list )* RPAREN
             | CALLOUT LPAREN STRING_LITERAL (COMMA expr_list)* RPAREN
             ;
 
