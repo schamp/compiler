@@ -4,6 +4,19 @@ import decaf.generated.*;
 import java.io.*;
 import java6035.tools.CLI.*;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+
+// from https://stackoverflow.com/questions/18132078/handling-errors-in-antlr4#26573239
+class ThrowingErrorListener extends BaseErrorListener {
+
+   public static final ThrowingErrorListener INSTANCE = new ThrowingErrorListener();
+
+   @Override
+   public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
+      throws ParseCancellationException {
+         throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg);
+      }
+}
 
 class Main {
     public static void main(String[] args) {
@@ -16,6 +29,9 @@ class Main {
         	if (CLI.target == CLI.SCAN)
         	{
         		DecafLexer lexer = new DecafLexer(CharStreams.fromStream(inputStream));
+        		lexer.removeErrorListeners();
+        		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
+
         		Token token;
         		boolean done = false;
         		while (!done)
@@ -61,10 +77,18 @@ class Main {
         	}
         	else if (CLI.target == CLI.PARSE || CLI.target == CLI.DEFAULT)
         	{
-        	/*	DecafLexer lexer = new DecafLexer(new ANTLRInputStream(inputStream));
-        		DecafParser parser = new DecafParser (lexer);
+        		DecafLexer lexer = new DecafLexer(new ANTLRInputStream(inputStream));
+        		lexer.removeErrorListeners();
+        		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
+
+        		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        		DecafParser parser = new DecafParser (tokens);
+        		parser.removeErrorListeners();
+        		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+
                 parser.program();
-                */
+
         	}
         	
         } catch(Exception e) {

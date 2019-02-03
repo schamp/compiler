@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 function run_legal_test {
   echo "Running parser test on ${1}..."]
@@ -8,7 +8,7 @@ function run_legal_test {
   $CMD
   if [[ $? -ne 0 ]]; then
     echo "Test failed."
-    echo $?
+    exit $?
   else
     echo "Test passed."
   fi
