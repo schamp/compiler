@@ -8,6 +8,7 @@ function run_legal_test {
   $CMD
   if [[ $? -ne 0 ]]; then
     echo "Test failed."
+    cat -n ${1}
     exit $?
   else
     echo "Test passed."
