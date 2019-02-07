@@ -40,7 +40,6 @@ WS_ : (' ' | '\t' | '\n' | '\f' ) { skip(); } ;
 
 SL_COMMENT : '//' ( ~'\n' )* '\n' { skip(); } ;
 
-fragment
 ESC :  '\\' ('n'|'t'|'\\'|'"'|'\'') ;
 
 // these must be hex, not octal!

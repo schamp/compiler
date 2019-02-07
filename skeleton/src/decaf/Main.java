@@ -41,8 +41,6 @@ class Main {
         	if (CLI.target == CLI.SCAN)
         	{
         		DecafLexer lexer = new DecafLexer(CharStreams.fromStream(inputStream));
-        		lexer.removeErrorListeners();
-        		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 
         		Token token;
         		boolean done = false;
