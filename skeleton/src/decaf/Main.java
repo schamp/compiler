@@ -71,9 +71,6 @@ class Main {
 							case DecafLexer.FALSE:
 								type = " BOOLEANLITERAL" ;
 								break;
-//							default:
-//								type = " "+Integer.toString(token.getType());
-//								break;
 		        			}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}

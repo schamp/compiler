@@ -40,6 +40,11 @@ WS_ : (' ' | '\t' | '\n' | '\f' ) { skip(); } ;
 
 SL_COMMENT : '//' ( ~'\n' )* '\n' { skip(); } ;
 
+INT_LITERAL : HEX_LITERAL | DECIMAL_LITERAL ;
+CHAR_LITERAL : '\'' (CHAR) '\'' ;
+STRING_LITERAL : '"' (CHAR)* '"' ;
+
+fragment
 ESC :  '\\' ('n'|'t'|'\\'|'"'|'\'') ;
 
 // these must be hex, not octal!
@@ -52,28 +57,21 @@ CHAR : '\u0020'..'\u0021'
      ;
 
 fragment
-DECIMAL_LITERAL : (DIGIT) (DIGIT)* ;
+DECIMAL_LITERAL : DIGIT+;
 
 fragment
-HEX_LITERAL : '0' 'x' (HEX_DIGIT) (HEX_DIGIT)* ;
+HEX_LITERAL : '0x' HEX_DIGIT+ ;
 
 fragment
-DIGIT : '0'..'9' ;
+DIGIT : [0-9] ;
 
 fragment
-HEX_DIGIT : DIGIT | 'a'..'f' | 'A'..'F' ;
-
-INT_LITERAL : ( DECIMAL_LITERAL | HEX_LITERAL ) ;
-CHAR_LITERAL : '\'' (CHAR) '\'' ;
-STRING_LITERAL : '"' (CHAR)* '"' ;
-
-fragment
-ALPHA : 'a'..'z' | 'A'..'Z' ;
+ALPHA : [a-zA-Z] ;
 
 fragment
 ALPHA_NUM : ALPHA | DIGIT ;
 
-IDENTIFIER : ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
+IDENTIFIER : ( ALPHA | '_' )+ ;
 
 ADD_OP : '+' | '-' ;
 
