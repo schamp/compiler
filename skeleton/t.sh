@@ -22,6 +22,13 @@ function run_illegal_test {
   echo $CMD;
   $CMD | tee /tmp/${1}.out
   diff output/${1}.out /tmp/${1}.out
+  if [[ $? -ne 0 ]]; then
+    echo "Test failed."
+    cat -n output/${1}.out
+    exit $?
+  else
+    echo "Test passed."
+  fi
 }
 
 ant

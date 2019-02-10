@@ -76,22 +76,26 @@ ALPHA_NUM : ALPHA | DIGIT ;
 IDENTIFIER : ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
 
 MINUS : '-' ;
+PLUS : '+' ;
 
-ADD_OP : '+' | MINUS ;
+TIMES : '*' ;
+DIV : '/' ;
+MOD : '%' ;
 
-MULT_OP: '*' | '/' | '%' ;
+LT : '<' ;
+GT : '>' ;
+LTE : '<=' ;
+GTE : '>=' ;
 
-REL_OP : '<' | '>' | '<=' | '>=' ;
+EQ : '==' ;
+NEQ : '!=' ;
 
-EQ_OP : '==' | '!=' ;
-
-AND_OP : '&&' ;
-
-OR_OP : '||' ;
+AND : '&&' ;
+OR : '||' ;
 
 EQUALS : '=' ;
-
-ASSIGN_OP : EQUALS | '+=' | '-=' ;
+PLUS_EQUALS : '+=' ;
+MINUS_EQUALS : '-=' ;
 
 NOT : '!' ;
 
@@ -117,31 +121,35 @@ id_list : IDENTIFIER (COMMA IDENTIFIER)* ;
 
 var_decl : type id_list SEMICOLON ;
 
-statement : location ASSIGN_OP expr SEMICOLON
+statement : assignment_statement
           | method_call SEMICOLON
           | if_statement
           | for_statement
-          | RETURN (expr)? SEMICOLON
+          | return_statement
           | BREAK SEMICOLON
           | CONTINUE SEMICOLON
           | block
           ;
 
+assignment_statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON ;
+
 if_statement : IF LPAREN expr RPAREN block (ELSE block)? ;
 
 for_statement : FOR IDENTIFIER EQUALS expr COMMA expr block ;
 
-expr : mult_expr ;
+return_statement : RETURN (expr)? SEMICOLON ;
 
-mult_expr : add_expr (MULT_OP expr)* ;
+expr : or_expr ;
 
-add_expr : rel_expr (ADD_OP expr)* ;
+or_expr : and_expr (OR and_expr)* ;
 
-rel_expr : and_expr ((REL_OP | EQ_OP) expr)* ;
+and_expr : rel_expr (AND rel_expr)* ;
 
-and_expr : or_expr (AND_OP expr)* ;
+rel_expr : add_expr ( (LT | LTE | GT | GTE | EQ | NEQ ) add_expr)* ;
 
-or_expr : unary_expr (OR_OP expr)* ;
+add_expr : mult_expr ( ( PLUS | MINUS ) mult_expr )* ;
+
+mult_expr : unary_expr ( (TIMES | DIV | MOD ) unary_expr)* ;
 
 unary_expr : MINUS expr
            | NOT expr
@@ -160,9 +168,11 @@ rvalue : method_call
        ;
 
 
-location : IDENTIFIER LBRACKET expr RBRACKET
+location : array_location
          | IDENTIFIER
          ;
+
+array_location : IDENTIFIER LBRACKET expr RBRACKET ;
 
 method_call : IDENTIFIER LPAREN ( expr_list )* RPAREN
             | CALLOUT LPAREN STRING_LITERAL (COMMA expr_list)* RPAREN
