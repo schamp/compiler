@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # needed so the alias
+
 shopt -s expand_aliases
 
 RULE=$1

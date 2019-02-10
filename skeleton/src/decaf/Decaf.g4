@@ -3,7 +3,6 @@ grammar Decaf;
 options
 {
   language='Java';
-  //testLiterals=false;
 }
 
 BOOLEAN : 'boolean' ;
@@ -36,7 +35,7 @@ RPAREN : ')' ;
 // but the errors it was producing were hard to handle with our tests
 // since we're not likely to use or encounter it in the real world,
 // let's make life easy by just considering it whitespace.
-WS_ : (' ' | '\t' | '\n' | '\f' ) { skip(); } ;
+WS_ : ( ' ' | '\t' | '\n' | '\f' ) { skip(); } ;
 
 SL_COMMENT : '//' ( ~'\n' )* '\n' { skip(); } ;
 
@@ -63,6 +62,9 @@ fragment
 HEX_LITERAL : '0x' HEX_DIGIT+ ;
 
 fragment
+HEX_DIGIT : ( DIGIT | [a-fA-F] ) ;
+
+fragment
 DIGIT : [0-9] ;
 
 fragment
@@ -71,9 +73,11 @@ ALPHA : [a-zA-Z] ;
 fragment
 ALPHA_NUM : ALPHA | DIGIT ;
 
-IDENTIFIER : ( ALPHA | '_' )+ ;
+IDENTIFIER : ( ALPHA | '_' ) ( ALPHA_NUM | '_' )* ;
 
-ADD_OP : '+' | '-' ;
+MINUS : '-' ;
+
+ADD_OP : '+' | MINUS ;
 
 MULT_OP: '*' | '/' | '%' ;
 
@@ -85,18 +89,15 @@ AND_OP : '&&' ;
 
 OR_OP : '||' ;
 
-ASSIGN_OP : EQUALS | '+=' | '-=' ;
-
 EQUALS : '=' ;
 
-MINUS : '-' ;
+ASSIGN_OP : EQUALS | '+=' | '-=' ;
 
 NOT : '!' ;
 
 /* parser rules */
 
 program : CLASS IDENTIFIER LCURLY (field_decl)* (method_decl)* RCURLY EOF ;
-
 
 type : INT | BOOLEAN ;
 
@@ -155,7 +156,7 @@ literal : INT_LITERAL
 rvalue : method_call
        | location
        | literal
-       | RPAREN expr LPAREN
+       | LPAREN expr RPAREN
        ;
 
 
