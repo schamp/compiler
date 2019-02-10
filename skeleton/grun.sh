@@ -20,7 +20,7 @@ export CLASSPATH=.:${ANTLR4}
 alias antlr4="java -jar ${ANTLR4}"
 alias grun='java org.antlr.v4.gui.TestRig'
 
-mkdir /tmp/grun
+mkdir -p /tmp/grun
 
 cp src/decaf/Decaf.g4 /tmp/grun
 
