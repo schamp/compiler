@@ -30,6 +30,6 @@ pushd /tmp/grun > /dev/null
 
   javac *.java
 
-  grun Decaf ${RULE} -trace -gui -tokens ${INPUT}
+  grun Decaf ${RULE} -trace -gui -tokens -tree ${INPUT}
 
 popd

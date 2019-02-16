@@ -121,58 +121,36 @@ id_list : IDENTIFIER (COMMA IDENTIFIER)* ;
 
 var_decl : type id_list SEMICOLON ;
 
-statement : assignment_statement
-          | method_call SEMICOLON
-          | if_statement
-          | for_statement
-          | return_statement
-          | BREAK SEMICOLON
-          | CONTINUE SEMICOLON
-          | block
+statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON # AssignStmt
+          | method_call SEMICOLON                                           # MethodCallStmt
+          | IF LPAREN expr RPAREN block (ELSE block)?                       # IfStmt
+          | FOR IDENTIFIER EQUALS expr COMMA expr block                     # ForStmt
+          | RETURN (expr)? SEMICOLON                                        # ReturnStmt
+          | BREAK SEMICOLON                                                 # BreakStmt
+          | CONTINUE SEMICOLON                                              # ContinueStmt
+          | block                                                           # BlockStmt
           ;
 
-assignment_statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON ;
-
-if_statement : IF LPAREN expr RPAREN block (ELSE block)? ;
-
-for_statement : FOR IDENTIFIER EQUALS expr COMMA expr block ;
-
-return_statement : RETURN (expr)? SEMICOLON ;
-
-expr : or_expr ;
-
-or_expr : and_expr (OR and_expr)* ;
-
-and_expr : rel_expr (AND rel_expr)* ;
-
-rel_expr : add_expr ( (LT | LTE | GT | GTE | EQ | NEQ ) add_expr)* ;
-
-add_expr : mult_expr ( ( PLUS | MINUS ) mult_expr )* ;
-
-mult_expr : unary_expr ( (TIMES | DIV | MOD ) unary_expr)* ;
-
-unary_expr : MINUS expr
-           | NOT expr
-           | rvalue
-           ;
+expr : method_call
+     | location
+     | literal
+     | LPAREN expr RPAREN
+     | ( MINUS | NOT ) expr
+     | expr (TIMES | DIV | MOD ) expr
+     | expr ( PLUS | MINUS ) expr
+     | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr
+     | expr AND expr
+     | expr OR expr
+     ;
 
 literal : INT_LITERAL
         | CHAR_LITERAL
         | STRING_LITERAL
         ;
 
-rvalue : method_call
-       | location
-       | literal
-       | LPAREN expr RPAREN
-       ;
-
-
-location : array_location
+location : IDENTIFIER LBRACKET expr RBRACKET
          | IDENTIFIER
          ;
-
-array_location : IDENTIFIER LBRACKET expr RBRACKET ;
 
 method_call : IDENTIFIER LPAREN ( expr_list )* RPAREN
             | CALLOUT LPAREN STRING_LITERAL (COMMA expr_list)* RPAREN

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function run_legal_test {
-  echo "Running parser test on ${1}..."]
+  echo "Running parser test on legal input ${1}..."]
   cat -n ${1}
   CMD="java -jar ../dist/Compiler.jar -target parse ${1}"
   echo $CMD;
@@ -16,7 +16,7 @@ function run_legal_test {
 }
 
 function run_illegal_test {
-  echo "Running parser test on ${1}..."
+  echo "Running parser test on illegal input ${1}..."
   cat -n ${1}
   CMD="java -jar ../dist/Compiler.jar -target parse ${1}"
   echo $CMD;
@@ -34,7 +34,7 @@ function run_illegal_test {
 ant
 pushd parser > /dev/null;
   if [[ "${1}" != "" ]]; then
-    if [[ "illegal" =~ "${1}" ]]; then
+    if [[ "${1}" =~ "illegal" ]]; then
       run_illegal_test "$1"
     else
       run_legal_test "$1"

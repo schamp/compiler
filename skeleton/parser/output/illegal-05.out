@@ -1,0 +1,4 @@
+illegal-04 org.antlr.v4.runtime.misc.ParseCancellationException: line 3:10 mismatched input '=' expecting {',', ';'}
+illegal-05 org.antlr.v4.runtime.misc.ParseCancellationException: line 5:11 mismatched input ',' expecting '('
+
+illegal-05 org.antlr.v4.runtime.misc.ParseCancellationException: line 5:11 mismatched input ',' expecting '('
