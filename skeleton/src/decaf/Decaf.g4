@@ -101,28 +101,28 @@ NOT : '!' ;
 
 /* parser rules */
 
-program : CLASS IDENTIFIER LCURLY (field_decl)* (method_decl)* RCURLY EOF ;
+program : CLASS IDENTIFIER LCURLY (fieldDecl)* (methodDecl)* RCURLY EOF ;
 
 type : INT | BOOLEAN ;
 
-field_decl_item : IDENTIFIER | IDENTIFIER LBRACKET INT_LITERAL RBRACKET ;
-field_decl_list : field_decl_item (COMMA field_decl_item)* ;
+fieldDeclItem : IDENTIFIER | IDENTIFIER LBRACKET INT_LITERAL RBRACKET ;
+fieldDeclList : fieldDeclItem (COMMA fieldDeclItem)* ;
 
-field_decl : type field_decl_list SEMICOLON ;
+fieldDecl : type fieldDeclList SEMICOLON ;
 
-param_item : type IDENTIFIER ;
-param_list : param_item (COMMA param_item)* ;
+paramItem : type IDENTIFIER ;
+paramList : paramItem (COMMA paramItem)* ;
 
-method_decl : (type | VOID) IDENTIFIER LPAREN (param_list)? RPAREN block ;
+methodDecl : (type | VOID) IDENTIFIER LPAREN (paramList)? RPAREN block ;
 
-block : LCURLY (var_decl)* (statement)* RCURLY ;
+block : LCURLY (varDecl)* (statement)* RCURLY ;
 
-id_list : IDENTIFIER (COMMA IDENTIFIER)* ;
+idList : IDENTIFIER (COMMA IDENTIFIER)* ;
 
-var_decl : type id_list SEMICOLON ;
+varDecl : type idList SEMICOLON ;
 
 statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON # AssignStmt
-          | method_call SEMICOLON                                           # MethodCallStmt
+          | methodCall SEMICOLON                                            # MethodCallStmt
           | IF LPAREN expr RPAREN block (ELSE block)?                       # IfStmt
           | FOR IDENTIFIER EQUALS expr COMMA expr block                     # ForStmt
           | RETURN (expr)? SEMICOLON                                        # ReturnStmt
@@ -131,7 +131,7 @@ statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON # As
           | block                                                           # BlockStmt
           ;
 
-expr : method_call
+expr : methodCall
      | location
      | literal
      | LPAREN expr RPAREN
@@ -152,8 +152,8 @@ location : IDENTIFIER LBRACKET expr RBRACKET
          | IDENTIFIER
          ;
 
-method_call : IDENTIFIER LPAREN ( expr_list )* RPAREN
-            | CALLOUT LPAREN STRING_LITERAL (COMMA expr_list)* RPAREN
+methodCall : IDENTIFIER LPAREN ( exprList )* RPAREN
+            | CALLOUT LPAREN STRING_LITERAL (COMMA exprList)* RPAREN
             ;
 
-expr_list : expr (COMMA expr)* ;
+exprList : expr (COMMA expr)* ;
