@@ -1,0 +1,7 @@
+class Program
+{
+  void main() {
+    boolean x;
+    return 1 + x;
+  }
+}

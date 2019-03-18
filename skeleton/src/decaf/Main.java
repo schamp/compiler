@@ -6,6 +6,7 @@ import java.util.Map;
 import java6035.tools.CLI.*;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 
 // from https://stackoverflow.com/questions/18132078/handling-errors-in-antlr4#26573239
 class ThrowingErrorListener extends BaseErrorListener {
@@ -96,8 +97,22 @@ class Main {
         		parser.setTrace(isTraceOn());
 
                 parser.program();
+			}
+			else if (CLI.target == CLI.INTER) {
+				DecafLexer lexer = new DecafLexer(CharStreams.fromStream(inputStream));
+        		lexer.removeErrorListeners();
+        		lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 
-        	}
+        		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        		DecafParser parser = new DecafParser (tokens);
+        		parser.removeErrorListeners();
+        		parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+				parser.setTrace(isTraceOn());
+				ParseTree tree = parser.program();
+				DecafSemanticVisitor visitor = new DecafSemanticVisitor();
+				visitor.visit(tree);
+			}
         	
         } catch(Exception e) {
         	// print the error:

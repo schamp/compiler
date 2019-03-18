@@ -131,21 +131,21 @@ statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON # As
           | block                                                           # BlockStmt
           ;
 
-expr : methodCall
-     | location
-     | literal
-     | LPAREN expr RPAREN
-     | ( MINUS | NOT ) expr
-     | expr (TIMES | DIV | MOD ) expr
-     | expr ( PLUS | MINUS ) expr
-     | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr
-     | expr AND expr
-     | expr OR expr
+expr : methodCall # MethodCallExpr
+     | location   # LocationExpr
+     | literal    # LiteralExpr
+     | LPAREN expr RPAREN # ParenExpr
+     | ( MINUS | NOT ) expr # UnaryExpr
+     | expr (TIMES | DIV | MOD ) expr  # AddExpr
+     | expr ( PLUS | MINUS ) expr      # AddExpr
+     | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr # CompExpr
+     | expr AND expr # BoolExpr
+     | expr OR expr  # BoolExpr
      ;
 
-literal : INT_LITERAL
-        | CHAR_LITERAL
-        | STRING_LITERAL
+literal : INT_LITERAL     # IntLiteral
+        | CHAR_LITERAL    # CharLiteral
+        | STRING_LITERAL  # StringLiteral
         ;
 
 location : IDENTIFIER LBRACKET expr RBRACKET
