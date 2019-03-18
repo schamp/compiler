@@ -1,5 +1,15 @@
 #!/bin/bash -e
 
+function run_test {
+  x=$1
+  echo "Running scanner test on ${x}..."
+  cat -n ${x}
+  CMD="java -jar ../dist/Compiler.jar -target scan ${x}"
+  echo $CMD;
+  $CMD 2>&1 | tee /tmp/${x}.out;
+  diff output/${x}.out /tmp/${x}.out
+}
+
 ant
 
 if [[ $1 == "scanner" ]]; then

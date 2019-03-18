@@ -1,22 +1,55 @@
-#!/bin/bash -e
+#!/bin/bash
+
+function run_legal_test {
+  echo "Running parser test on legal input ${1}..."]
+  cat -n ${1}
+  CMD="java -jar ../dist/Compiler.jar -target parse ${1}"
+  echo $CMD;
+  $CMD
+  if [[ $? -ne 0 ]]; then
+    echo "Test failed."
+    cat -n ${1}
+    exit $?
+  else
+    echo "Test passed."
+  fi
+}
+
+function run_illegal_test {
+  echo "Running parser test on illegal input ${1}..."
+  cat -n ${1}
+  CMD="java -jar ../dist/Compiler.jar -target parse ${1}"
+  echo $CMD;
+  $CMD | tee /tmp/${1}.out
+  diff output/${1}.out /tmp/${1}.out
+  if [[ $? -ne 0 ]]; then
+    echo "Test failed."
+    cat -n output/${1}.out
+    exit $?
+  else
+    echo "Test passed."
+  fi
+}
 
 ant
-x=$2
-if [[ $1 == "scanner" ]]; then
-  pushd scanner > /dev/null;
-    echo "Running test on ${x}..."
-    CMD="java -jar ../dist/Compiler.jar -target scan ${x}"
-    echo $CMD;
-    $CMD | tee /tmp/${x}.out;
-    diff output/${x}.out /tmp/${x}.out
-  popd > /dev/null;
-elif [[ $1 == "parser" ]]; then
-  pushd parser > /dev/null;
-    echo "Running test on ${x}..."
-    CMD="java -jar ../dist/Compiler.jar -target parse ${x}"
-    echo $CMD;
-    $CMD;
+pushd parser > /dev/null;
+  if [[ "${1}" != "" ]]; then
+    if [[ "${1}" =~ "illegal" ]]; then
+      run_illegal_test "$1"
+    else
+      run_legal_test "$1"
+    fi
+  else
+    for x in legal-*; do
+      if [[ "${x}" != "output" ]]; then
+        run_legal_test $x
+      fi
+    done
+    for x in illegal-*; do
+      if [[ "${x}" != "output" ]]; then
+        run_illegal_test $x
+      fi
+    done
+  fi
 popd > /dev/null;
-fi
-
 

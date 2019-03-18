@@ -9,7 +9,7 @@ options
 class DecafScanner extends Lexer;
 options 
 {
-  k=2;
+  k=3;
   testLiterals=false;
 }
 
@@ -53,26 +53,23 @@ INT_LITERAL options {testLiterals=true; }: ( DECIMAL_LITERAL | HEX_LITERAL ) ;
 CHAR_LITERAL : '\'' (CHAR) '\'';
 STRING_LITERAL : '"' (CHAR)* '"';
 
-OPERATOR : ARITH_OP
-         | REL_OP
-         | EQ_OP
-         | COND_OP
-         | ASSIGN_OP ;
+ADD_OP : '+' | '-' ;
 
-protected
-ARITH_OP : '+' | '-' | '*' | '/' | '%' ;
+MULT_OP: '*' | '/' | '%' ;
 
-protected
 REL_OP : '<' | '>' | "<=" | ">=" ;
 
-protected
 EQ_OP : "==" | "!=" ;
 
-protected
-COND_OP : "&&" | "||" ;
+AND_OP : "&&" ;
 
-protected
-ASSIGN_OP : "=" | "+=" | "-=" ;
+OR_OP : "||" ;
+
+ASSIGN_OP : EQUALS | "+=" | "-=" ;
+
+EQUALS : '=' ;
+
+MINUS : '-' ;
 
 protected
 ESC :  '\\' ('n'|'t'|'\\'|'\"'|'\'') ;
@@ -107,4 +104,4 @@ protected
 DIGIT : '0'..'9' ;
 
 protected
-HEX_DIGIT : DIGIT | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+HEX_DIGIT : DIGIT | 'a'..'f' | 'A'..'F' ;
