@@ -48,12 +48,12 @@ ESC :  '\\' ('n'|'t'|'\\'|'"'|'\'') ;
 
 // these must be hex, not octal!
 fragment
-CHAR : '\u0020'..'\u0021'
-     | '\u0023'..'\u0026'
-     | '\u0028'..'\u005B'
-     | '\u005D'..'\u007E'
-     | ESC
-     ;
+CHAR: '\u0020'..'\u0021'
+    | '\u0023'..'\u0026'
+    | '\u0028'..'\u005B'
+    | '\u005D'..'\u007E'
+    | ESC
+    ;
 
 fragment
 DECIMAL_LITERAL : DIGIT+;
@@ -131,29 +131,30 @@ statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON # As
           | block                                                           # BlockStmt
           ;
 
-expr : methodCall # MethodCallExpr
-     | location   # LocationExpr
-     | literal    # LiteralExpr
-     | LPAREN expr RPAREN # ParenExpr
-     | ( MINUS | NOT ) expr # UnaryExpr
-     | expr (TIMES | DIV | MOD ) expr  # AddExpr
-     | expr ( PLUS | MINUS ) expr      # AddExpr
-     | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr # CompExpr
-     | expr AND expr # BoolExpr
-     | expr OR expr  # BoolExpr
-     ;
+expr: methodCall                                   # MethodCallExpr
+    | location                                     # LocationExpr
+    | literal                                      # LiteralExpr
+    | LPAREN expr RPAREN                           # ParenExpr
+    | ( MINUS | NOT ) expr                         # UnaryExpr
+    | expr (TIMES | DIV | MOD ) expr               # AddExpr
+    | expr ( PLUS | MINUS ) expr                   # AddExpr
+    | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr  # CompExpr
+    | expr AND expr                                # BoolExpr
+    | expr OR expr                                 # BoolExpr
+    ;
 
 literal : INT_LITERAL     # IntLiteral
         | CHAR_LITERAL    # CharLiteral
         | STRING_LITERAL  # StringLiteral
+        | (TRUE | FALSE)    # BoolLiteral
         ;
 
-location : IDENTIFIER LBRACKET expr RBRACKET
-         | IDENTIFIER
-         ;
+location: IDENTIFIER LBRACKET expr RBRACKET  # IdArrayLocation
+        | IDENTIFIER                         # IdLocation
+        ;
 
-methodCall : IDENTIFIER LPAREN ( exprList )* RPAREN
-            | CALLOUT LPAREN STRING_LITERAL (COMMA exprList)* RPAREN
-            ;
+methodCall: IDENTIFIER LPAREN ( exprList )* RPAREN
+          | CALLOUT LPAREN STRING_LITERAL (COMMA exprList)* RPAREN
+          ;
 
 exprList : expr (COMMA expr)* ;
