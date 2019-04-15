@@ -131,22 +131,22 @@ statement : location ( EQUALS | PLUS_EQUALS | MINUS_EQUALS ) expr SEMICOLON # As
           | block                                                           # BlockStmt
           ;
 
-expr: methodCall                                   # MethodCallExpr
-    | location                                     # LocationExpr
-    | literal                                      # LiteralExpr
-    | LPAREN expr RPAREN                           # ParenExpr
-    | ( MINUS | NOT ) expr                         # UnaryExpr
-    | expr (TIMES | DIV | MOD ) expr               # AddExpr
-    | expr ( PLUS | MINUS ) expr                   # AddExpr
-    | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr  # CompExpr
-    | expr AND expr                                # BoolExpr
-    | expr OR expr                                 # BoolExpr
+expr : methodCall # MethodCallExpr
+     | location   # LocationExpr
+     | literal    # LiteralExpr
+     | LPAREN expr RPAREN # ParenExpr
+     | ( MINUS | NOT ) expr # UnaryExpr
+     | expr (TIMES | DIV | MOD ) expr  # AddExpr
+     | expr ( PLUS | MINUS ) expr      # AddExpr
+     | expr (LT | LTE | GT | GTE | EQ | NEQ ) expr # CompExpr
+     | expr AND expr # BoolExpr
+     | expr OR expr  # BoolExpr
     ;
 
 literal : INT_LITERAL     # IntLiteral
         | CHAR_LITERAL    # CharLiteral
         | STRING_LITERAL  # StringLiteral
-        | (TRUE | FALSE)    # BoolLiteral
+        | (TRUE | FALSE)  # BoolLiteral
         ;
 
 location: IDENTIFIER LBRACKET expr RBRACKET  # IdArrayLocation
@@ -154,7 +154,7 @@ location: IDENTIFIER LBRACKET expr RBRACKET  # IdArrayLocation
         ;
 
 methodCall: IDENTIFIER LPAREN ( exprList )* RPAREN
-          | CALLOUT LPAREN STRING_LITERAL (COMMA exprList)* RPAREN
-          ;
+            | CALLOUT LPAREN STRING_LITERAL (COMMA exprList)* RPAREN
+            ;
 
 exprList : expr (COMMA expr)* ;
