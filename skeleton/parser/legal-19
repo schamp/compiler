@@ -1,0 +1,13 @@
+class Program {
+  void main() {
+    foo();	// semanitcally bad, but gramatically ok
+    bar();
+  }
+
+  boolean foo() {
+    return true;
+  }
+  boolean bar() {
+    return false;
+  }
+}
