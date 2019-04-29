@@ -3,6 +3,22 @@ package decaf;
 import decaf.generated.*;
 
 class DecafSemanticVisitor extends DecafBaseVisitor<DecafType> {
+	private Scopes scopes;
+
+	DecafSemanticVisitor() {
+		this.super();
+		this.scopes = new Scopes();
+	}
+
+	public DecafType visitFieldDeclItem(DecafParser.FieldDeclItemContext ctx) {
+		// TODO: Implement this 
+	}
+
+	public DecafType visitIdLocation(DecafParser.IdLocationContext ctx) {
+		String id = ctx.expr(0);
+		return scopes.lookupVar(id);
+	}
+
 	@Override
 	public DecafType visitBoolLiteral(DecafParser.BoolLiteralContext ctx) {
 		return DecafType.BOOL;
@@ -34,7 +50,7 @@ class DecafSemanticVisitor extends DecafBaseVisitor<DecafType> {
 	}
 
 	@Override
-	public DecafType visitCompExpr(DecafParser.CompExprContext ctx) {
+	public DecafType visitCompExpr(DecafParser.CompExprContext ctx) throws RuntimeException {
 		DecafType left = visit(ctx.expr(0));
 		DecafType right = visit(ctx.expr(1));
 		if (left != right || left == DecafType.VOID || right == DecafType.VOID) {
